@@ -35,7 +35,7 @@ export default connect(({list}) => {
     });
   },
   handleForward({dispatch, getState}, step) {
-    dispatch({type: 'list/changeState', payload: {step: step - 1}})
+    dispatch({type: 'list/changeState', payload: {step: step - 1}});
   }
 })(UI);
 

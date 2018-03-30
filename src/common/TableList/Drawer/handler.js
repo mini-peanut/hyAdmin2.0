@@ -3,6 +3,7 @@ import services from "../../../services/user";
 import {alertError} from "../../handler";
 import _ from 'lodash';
 import {formatDataForModel} from "../handler";
+import {message} from "antd";
 
 export function stepParamsCheck({pageSetting, prefix, step}) {
   const steps = pageSetting.steps;
@@ -47,9 +48,7 @@ function stepSubmit({dispatch}, props) {
     const isSuccess = res.status;
     const nextStep = step + 1;
     const isLastSubmit = steps.length === step + 1;
-
     !isSuccess && alertError({title: `写入错误：${prefix.list}`, res});
-
     if (isSuccess && !isLastSubmit && stepParamsCheck({...props, step: nextStep})) {
 
       dispatch({type: 'list/changeState', payload: {[`step${step}`]: res.id}});
@@ -59,9 +58,17 @@ function stepSubmit({dispatch}, props) {
         const {formFields} = formatDataForModel(nextStep, res['module_name'], res.columns);
         dispatch({type: 'list/appendFormField', payload: {[`step${nextStep}`]: formFields[`step${nextStep}`]}});
         dispatch({type: 'list/changeState', payload: {step: nextStep}});
-
       });
 
+    }else if(isSuccess && isLastSubmit && nextStep !== 1){
+      dispatch({
+        type: 'list/changeState',
+        payload: {
+          modalVisible: false,
+          actionType: ''
+        }
+      });
+      message.success('新建成功^-^');
     }
 
   });
