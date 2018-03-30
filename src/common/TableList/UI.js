@@ -21,7 +21,6 @@ export default function (props) {
     <PageHeaderLayout title="查询表格">
       <Card bordered={false}>
         <div className={styles.tableList}>
-          <Filter />
           <Action {...actionProps} />
           <StandardTable {...standardTableProps} />
           <Drawer />

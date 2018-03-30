@@ -49,7 +49,6 @@ function stepSubmit({dispatch}, props) {
     const isLastSubmit = steps.length === step + 1;
 
     !isSuccess && alertError({title: `写入错误：${prefix.list}`, res});
-
     if (isSuccess && !isLastSubmit && stepParamsCheck({...props, step: nextStep})) {
 
       dispatch({type: 'list/changeState', payload: {[`step${step}`]: res.id}});
@@ -58,10 +57,12 @@ function stepSubmit({dispatch}, props) {
       services.getColumns({path: prefix.list, step: nextStep, id: res.id}).then(res => {
         const {formFields} = formatDataForModel(nextStep, res['module_name'], res.columns);
         dispatch({type: 'list/appendFormField', payload: {[`step${nextStep}`]: formFields[`step${nextStep}`]}});
-        dispatch({type: 'list/changeState', payload: {step: nextStep}});
 
+        dispatch({type: 'list/changeState', payload: {step: nextStep}});
       });
 
+    }else if(isSuccess && isLastSubmit){
+      dispatch({type: 'list/changeState', payload: {modalVisible: false, actionType: ''}});
     }
 
   });
