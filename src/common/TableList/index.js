@@ -20,7 +20,9 @@ export default connect(({list}) => {
 
   },
   handleDelete({dispatch, getState}, col) {
-
+    dispatch({type: 'list/deleteList', payload: {
+      col
+    }});
   },
   handleModalVisible({dispatch, getState}) {
 

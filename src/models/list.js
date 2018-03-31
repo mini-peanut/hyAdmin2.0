@@ -61,6 +61,14 @@ export default {
         },
       };
     },
+    deleteList(state, {payload: {col}}) {
+      return {
+        ...state,
+        listData: {
+          list: state.listData.list.filter(item => item.id != col.id)
+        },
+      };
+    },
     appendFormField(state, action) {
       return {
         ...state,
