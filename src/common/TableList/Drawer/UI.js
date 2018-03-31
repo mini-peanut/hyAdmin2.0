@@ -1,6 +1,6 @@
 import Drawer from 'components/Drawer';
 import styles from '../style.less';
-import {Form, Steps, Card, Layout, Select, Button, Input } from "antd";
+import {Form, Steps, Card, Layout, Select, Button } from "antd";
 import _ from 'lodash';
 
 
