@@ -2,6 +2,7 @@ import {connect} from "app";
 import UI from './UI';
 import { Modal } from 'antd';
 import {ACTION_TYPE} from "./config";
+import services from "../../services/user";
 
 const confirm = Modal.confirm;
 
