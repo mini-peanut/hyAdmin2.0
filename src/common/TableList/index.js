@@ -2,6 +2,7 @@ import {connect} from "app";
 import UI from './UI';
 import { Modal } from 'antd';
 import {ACTION_TYPE} from "./config";
+import services from "../../services/user";
 
 const confirm = Modal.confirm;
 
@@ -20,7 +21,9 @@ export default connect(({list}) => {
 
   },
   handleDelete({dispatch, getState}, col) {
-
+    dispatch({type: 'list/deleteList', payload: {
+      col
+    }});
   },
   handleModalVisible({dispatch, getState}) {
 

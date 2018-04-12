@@ -51,7 +51,7 @@ function stepSubmit({dispatch}, props) {
     !isSuccess && alertError({title: `写入错误：${prefix.list}`, res});
     if (isSuccess && !isLastSubmit && stepParamsCheck({...props, step: nextStep})) {
 
-      dispatch({type: 'list/changeState', payload: {[`step${step}`]: res.id}});
+      dispatch({type: 'list/changeState', payload: {[`step${step}`]: res.id, submitData: values}});
       dispatch({type: 'list/appendList', payload: {...values, id: res.id, key: res.id}});
 
       services.getColumns({path: prefix.list, step: nextStep, id: res.id}).then(res => {
@@ -60,12 +60,14 @@ function stepSubmit({dispatch}, props) {
         dispatch({type: 'list/changeState', payload: {step: nextStep}});
       });
 
-    }else if(isSuccess && isLastSubmit && nextStep !== 1){
+    }else if(isSuccess && isLastSubmit && nextStep == 2){
       dispatch({
         type: 'list/changeState',
         payload: {
           modalVisible: false,
-          actionType: ''
+          actionType: '',
+          step: 0,
+          submitData: null
         }
       });
       message.success('新建成功^-^');

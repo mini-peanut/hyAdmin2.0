@@ -7,7 +7,7 @@ import {alertWarning} from "../../handler";
 const confirm = Modal.confirm;
 
 export default connect(({list}) => {
-  let {modalVisible, step, pageSetting, formFields} = list;
+  let {modalVisible, step, pageSetting, formFields, submitData} = list;
   let count = 0;
   let stepIds = {};
   while (count < step) {
@@ -19,7 +19,8 @@ export default connect(({list}) => {
     pageSetting,
     formFields: formFields[`step${step}`],
     step,
-    stepIds
+    stepIds,
+    submitData
   }
 },{
   handleSubmit,
