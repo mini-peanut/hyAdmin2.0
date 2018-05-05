@@ -7,11 +7,6 @@ const Option = Select.Option;
 const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['关闭', '运行中', '已上线', '异常'];
 const listFieldOptions = {
-  name: {
-    render(val, record) {
-      return <Link to='/System/role~auth'>{val}</Link>
-    }
-  },
   status: {
     render(val) {
       return <Badge status={statusMap[val]} text={status[val]} />;

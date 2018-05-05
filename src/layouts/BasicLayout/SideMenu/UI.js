@@ -15,6 +15,6 @@ export default function ({menuData, collapsed, isMobile, location, onMenuCollaps
     onCollapse: onMenuCollapse,
     menuData: menuData,
   };
-  
+
   return <SiderMenu {...sideMenuProps}  />
 }

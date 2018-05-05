@@ -25,7 +25,7 @@ export async function initBasicData({dispatch, getState}) {
   const currentUser = await services.getCurrentUser();
   dispatch({
     type: 'menu/changeMenuData',
-    payload: menuData || []
+    payload: menuData
   });
   dispatch({
     type: 'user/saveCurrentUser',

@@ -27,7 +27,12 @@ class StandardTable extends PureComponent {
   componentWillReceiveProps(nextProps) {
     // clean state
     if (nextProps.selectedRows.length === 0) {
-      nextProps.columns.push({dataIndex: 'operations', title: '操作', render: this.renderOperations});
+
+      const {handleEdit, handleDelete, pageSetting: {actions = {}}} = nextProps;
+      const {delete: del, edit} = actions;
+      if (del && edit && (!del.hidden || !edit.hidden)) {
+        nextProps.columns.push({dataIndex: 'operations', title: '操作', render: this.renderOperations});
+      }
       const needTotalList = initTotalList(nextProps.columns);
       this.setState({
         selectedRowKeys: [],
@@ -63,11 +68,16 @@ class StandardTable extends PureComponent {
   }
 
   renderOperations = (val, col) => {
-    const {handleEdit, handleDelete} = this.props;
+    const {handleEdit, handleDelete, pageSetting: {actions = {}}} = this.props;
+    const {delete: del, edit} = actions;
     return <Fragment>
-      <a onClick={() => handleEdit(col)}>编辑</a>
-      <Divider type="vertical" />
-      <a onClick={() => handleDelete(col)}>删除</a>
+      {!edit.hidden && <a onClick={() => handleEdit(col)}>{edit.title || '编辑'}</a>}
+      {!del.hidden &&
+        <span>
+          <Divider type="vertical" />
+          <a onClick={() => handleDelete(col)}>{del.title || '删除'}</a>
+        </span>
+      }
     </Fragment>
   }
   render() {

@@ -37,7 +37,7 @@ export default {
         type: 'user/changeNotifyCount',
         payload: count,
       });
-    },
+    }
   },
 
   reducers: {
@@ -67,38 +67,7 @@ export default {
         if (typeof window.ga !== 'undefined') {
           window.ga('send', 'pageview', pathname + search);
         }
-        const routes = globalState._routes;
-        _.each(routes, function ({component, path}) {
-
-          switch (component) {
-            case 'tableList':
-              if (pathname === path) {
-
-                let pagination = storage.getItem(`pagination_${path}`);
-                if (!pagination) {
-                  pagination = {path, pageSize: PAGE_SIZE, pageNo: PAGE_NO};
-
-                  storage.setItem(`pagination_${path}`, pagination);
-                }
-                services.getTableData({path, pagination}).then(function (res) {
-                  const {columns, listData} = res;
-                  const formatColumnsData = formatDataForModel(0, path, columns);
-                  const formatListData = {
-                    list: listData.map((item, key) => ({...item, key: item.id, operations: 0})),
-                    pagination
-                  };
-
-                  dispatch({
-                    type: 'list/changeState',
-                    payload: {listData: formatListData, ...formatColumnsData},
-                    meta: {prefix: path}
-                  });
-
-                });
-              }
-          }
-        })
       });
     },
-  }
+  },
 };

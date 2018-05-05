@@ -70,12 +70,13 @@ const members = [
   },
 ];
 
-@connect(({ project, activities, chart, loading }) => ({
+@connect(({ project, activities, chart, loading, user }) => ({
   project,
   activities,
   chart,
   projectLoading: loading.effects['project/fetchNotice'],
   activitiesLoading: loading.effects['activities/fetchList'],
+  user
 }))
 export default class Workplace extends PureComponent {
   componentDidMount() {
@@ -98,6 +99,16 @@ export default class Workplace extends PureComponent {
     });
   }
 
+  getTime(ns) {
+    let date = new Date(+ns);
+    let Y = date.getFullYear() + '-';
+    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    let D = date.getDate() + ' ';
+    let h = date.getHours() + ':';
+    let m = date.getMinutes() + ':';
+    let s = date.getSeconds();
+    return Y+M+D+h+m+s;
+  }
   renderActivities() {
     const {
       activities: { list },
@@ -137,7 +148,10 @@ export default class Workplace extends PureComponent {
       projectLoading,
       activitiesLoading,
       chart: { radarData },
+      user: {currentUser: {name, major, email, login_last_time}}
     } = this.props;
+
+    const date = this.getTime(login_last_time);
 
     const pageHeaderContent = (
       <div className={styles.pageHeaderContent}>
@@ -145,25 +159,8 @@ export default class Workplace extends PureComponent {
           <Avatar size="large" src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
         </div>
         <div className={styles.content}>
-          <div className={styles.contentTitle}>早安，曲丽丽，祝你开心每一天！</div>
-          <div>交互专家 | 蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED</div>
-        </div>
-      </div>
-    );
-
-    const extraContent = (
-      <div className={styles.extraContent}>
-        <div className={styles.statItem}>
-          <p>项目数</p>
-          <p>56</p>
-        </div>
-        <div className={styles.statItem}>
-          <p>团队内排名</p>
-          <p>8<span> / 24</span></p>
-        </div>
-        <div className={styles.statItem}>
-          <p>项目访问</p>
-          <p>2,223</p>
+          <div className={styles.contentTitle}>早安，{name}，祝你开心每一天！</div>
+          <div>{major} | {email} | 上次登录时间－{date}</div>
         </div>
       </div>
     );
@@ -171,7 +168,6 @@ export default class Workplace extends PureComponent {
     return (
       <PageHeaderLayout
         content={pageHeaderContent}
-        extraContent={extraContent}
       >
         <Row gutter={24}>
           <Col xl={16} lg={24} md={24} sm={24} xs={24}>

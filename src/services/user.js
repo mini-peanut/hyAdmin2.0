@@ -3,29 +3,54 @@ import {ajax} from '../utils/request';
 
 const services = {};
 
-const request = path => (params = {}) => ajax.post(path, params);
+const request = path => (params = {}) => {
+  const hash = window.location.hash;
+  const mainModule = hash.split('~')[0].slice(1);
 
-services.login = request('System/HyStart/login');
+  params = {mainModule, ...params, params: {...params.params}};
 
-services.logout = request('System/HyStart/logout');
+  hash.split('~')[1] && hash.split('~')[1].split('&').map(function (item) {
+    const [key, value] = item.split('=');
+    if (key === 'page') {
+      params.page = value
+    } else {
+      params.params[key] = +value;
+    }
+  });
 
-services.checkAuthority = request('System/User/checkAuth');
+  return ajax.post(path, params);
+};
 
-services.getRouterData = request('System/User/routerData');
+services.login = request('System/Account/login');
 
-services.getMenuData = request('System/User/menuData');
+services.logout = request('System/Account/logout');
 
-services.getModules = request('System/User/modules');
+services.getCurrentUser = request('System/Account/currentUser');
+
+services.checkAuthority = request('System/Account/checkAuth');
+
+
+services.getRouterData = request('System/BasicData/routerData');
+
+services.getMenuData = request('System/BasicData/menuData');
+
+services.getModules = request('System/BasicData/modules');
 
 services.getTableData = request('Common/HyAll/all');
 
+
+
 services.addFormData = request('Common/HyAll/ajax?q=insert');
 
-services.delListData = request('Common/HyAll/ajax?q=insert');
+services.delListData = request('Common/HyAll/ajax?q=delete');
 
-services.getColumns = request('Common/HyAll/columns');
+services.modFormData = request('Common/HyAll/ajax?q=edit');
 
-services.getCurrentUser = request('System/User/currentUser')
+services.getColumns = request('Common/HyAll/nextForm');
+
+services.getModuleOption = request('Common/HyAll/moduleOption');
+
+services.getModuleList = request('Common/HyAll/moduleList');
 
 
 export default services;

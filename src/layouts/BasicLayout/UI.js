@@ -101,6 +101,10 @@ export default class BasicLayout extends React.PureComponent {
 
     const redirectData = getRedirectData(menuData);
     const bashRedirect = this.getBashRedirect();
+
+    if (location.pathname.split('~').length > 1) {
+      location.pathname = location.pathname.split('~')[0];
+    }
     const layout = (
       <Layout>
         <SiderMenu location={location} />
@@ -126,6 +130,7 @@ export default class BasicLayout extends React.PureComponent {
               }
               {
                 getRoutes(match.path, routerData).map(item =>{
+
                   return (
                     <AuthorizedRoute
                       key={item.key}
